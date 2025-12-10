@@ -1,0 +1,24 @@
+Test Case ID,Category,Test Title,Priority,Test Steps,Input,Expected Output,Actual Result,Status
+TC001,Offer Creation,Create FLATX offer for single segment,High,"1. Send POST to /api/v1/offer with FLATX type
+2. Specify restaurant_id: 1, offer_value: 50, segment: ['p1']","restaurant_id:1, offer_type:'FLATX', offer_value:50, segment:['p1']","HTTP 200, cart_value: 150 when applied to cart of 200",Pass - Cart value correctly reduced to 150,Pass
+TC002,Offer Application,Apply FLATPERCENT offer (20% discount),High,"1. Create FLATPERCENT offer for restaurant 2
+2. Apply to cart with value 500
+3. Verify 20% discount applied","cart:500, user:1(p1), restaurant:2, offer:FLATPERCENT 20","cart_value: 400 (20% off 500)",Pass - Cart value correctly calculated as 400,Pass
+TC003,No Offer Scenario,No offer exists for restaurant,High,"1. Apply offer for restaurant without any offers
+2. Verify cart value remains unchanged","cart:300, user:1, restaurant:99 (no offers)","cart_value: 300 (unchanged)","Pass - No discount applied, cart remains 300",Pass
+TC004,Offer Creation,Create offer for multiple segments,High,"1. Create offer with multiple customer segments
+2. Verify offer is created successfully","restaurant_id:3, offer_type:'FLATX', offer_value:30, segments:['p1','p2']","HTTP 200, offer created for all segments",Pass - Offer created successfully,Pass
+TC005,Edge Case,Apply FLATX when cart equals offer value,Medium,"1. Create FLATX offer equal to cart value
+2. Apply offer
+3. Verify final cart value is 0","cart:100, user:1(p1), restaurant:4, offer:FLATX 100",cart_value: 0,Pass - Cart value correctly calculated as 0,Pass
+TC006,Offer Application,Apply 50% discount (FLATPERCENT),High,"1. Create 50% FLATPERCENT offer
+2. Apply to cart value 1000
+3. Verify 50% discount","cart:1000, user:1(p1), restaurant:5, offer:FLATPERCENT 50",cart_value: 500,Pass - Cart value correctly calculated as 500,Pass
+TC007,Segment Validation,User segment mismatch - no offer applied,High,"1. Create offer for segment p2
+2. Apply with user from segment p1
+3. Verify no discount applied","cart:500, user:1(p1), restaurant:6, offer:FLATX 100 for p2","cart_value: 500 (no discount)","Pass - Segment validation working, no discount applied",Pass
+TC008,Edge Case,Large cart value with percentage discount,Medium,"1. Create 15% FLATPERCENT offer
+2. Apply to large cart value (10000)
+3. Verify calculation accuracy","cart:10000, user:1(p1), restaurant:7, offer:FLATPERCENT 15",cart_value: 8500,Pass - Large value calculation correct: 8500,Pass
+TC009,Basic Functionality,Basic FLATX offer creation (Original test),High,"1. Create basic FLATX offer
+2. Verify API returns success response","restaurant_id:1, offer_type:'FLATX', offer_value:10, segment:['p1']","HTTP 200, success response",Pass - Offer created successfully,Pass
